@@ -62,13 +62,12 @@ int main(void)
 	UserLed_Init();
 
 	if (UART_Init(&husart)) usermode_Error(__LINE__);
-	if (initSramPuf(&husart, 0x20015000, 0x20015008) != 0) usermode_Error(__LINE__);
+	// if (initSramPuf(&husart, 0x20015000, 0x20015100) != 0) usermode_Error(__LINE__);
+	if (initSramPuf(&husart, 0x20005000, 0x20006388) != 0) usermode_Error(__LINE__);
 	if (TempSensor_ADC_Init(&hadc)) usermode_Error(__LINE__);
 
-	HAL_GPIO_TogglePin(LED_GPIO_PORT, LED_PIN);
-
-	char *msg = "UART is MUART\n";
-	HAL_USART_Transmit(&husart, (uint8_t *)msg, strlen(msg), HAL_MAX_DELAY);
+	// char *msg = "UART is MUART\n";
+	// HAL_USART_Transmit(&husart, (uint8_t *)msg, strlen(msg), HAL_MAX_DELAY);
 
 
 
@@ -103,7 +102,7 @@ int main(void)
 			sendPacket();
 		}
 		
-		HAL_Delay(10);
+		HAL_Delay(50);
 	}
 }
 
