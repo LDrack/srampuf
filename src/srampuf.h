@@ -18,7 +18,8 @@
   * @brief  Aggregates all the necessary values needed for this module.
   * @param  husart:     Initialised USART handle.
   * @param  membegin:   Start address of PUF.
-  * @param  memend:     End address of PUF.
+  * @param  memend:     EXCLUSIVE end address of PUF. If start is 0x20005000 and end is
+  *                     0x20005800, then address 0x200057FF is the last byte that is read!
   * @retval 0 on success, negative on error.
 */
 int initSramPuf(USART_HandleTypeDef *husart, unsigned int membegin, unsigned int memend);

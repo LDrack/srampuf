@@ -35,6 +35,24 @@ void sendPacket() {
 	if(HAL_USART_Transmit(&husart, (uint8_t *)buf, len, HAL_MAX_DELAY) != HAL_OK) usermode_Error(__LINE__);
 }
 
+
+void sendCompletePufs() {
+	const int nPufs = 35;
+	
+	unsigned int pufBegin = 0x20005000;
+	const unsigned int pufSize  = 0x800;
+	for (int i = 0; i < nPufs; i++)
+	{
+		unsigned int pufEnd = pufBegin + pufSize;
+		if (initSramPuf(&husart, pufBegin, pufEnd) != 0) usermode_Error(__LINE__);
+		sendPacket();
+		pufBegin = pufEnd;
+
+		HAL_Delay(2000);
+	}
+}
+
+
 // Debounces button using a shift register method. Use in loop.
 // When button was pressed and is let go, this function returns 1, otherwise 0.
 int onceOnButtonPress(void) {
@@ -63,21 +81,11 @@ int main(void)
 
 	if (UART_Init(&husart)) usermode_Error(__LINE__);
 	// if (initSramPuf(&husart, 0x20015000, 0x20015100) != 0) usermode_Error(__LINE__);
-	if (initSramPuf(&husart, 0x20005000, 0x20006388) != 0) usermode_Error(__LINE__);
+	// if (initSramPuf(&husart, 0x20005000, 0x20006388) != 0) usermode_Error(__LINE__);
 	if (TempSensor_ADC_Init(&hadc)) usermode_Error(__LINE__);
 
 	// char *msg = "UART is MUART\n";
 	// HAL_USART_Transmit(&husart, (uint8_t *)msg, strlen(msg), HAL_MAX_DELAY);
-
-
-
-	// int const n = 128;
-	// char buf[n];
-
-	// ret = snprintf(buf, n, "Variable n = %d sitting @ %p\n", n, &n);
-	// if (ret < 0 || ret >= n) usermode_Error(__LINE__);
-	// if (HAL_USART_Transmit(&husart, (uint8_t *)buf, strlen(buf), HAL_MAX_DELAY) != HAL_OK) usermode_Error(__LINE__);
-
 
 	// f401reMemDump();
 
@@ -85,7 +93,6 @@ int main(void)
 	// srampufDump(0);
 
 	
-
 	
 
 	
@@ -99,7 +106,8 @@ int main(void)
 		}
 
 		if(onceOnButtonPress()) {
-			sendPacket();
+			// sendPacket();
+			sendCompletePufs();
 		}
 		
 		HAL_Delay(50);
