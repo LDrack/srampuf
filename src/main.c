@@ -11,7 +11,6 @@ USART_HandleTypeDef husart = {0};
 ADC_HandleTypeDef hadc = {0};
 
 
-
 // Attention: use initSramPuf() first before calling these functions!
 void printUniqueID() {
 	int ret = uartPrintf("Unique ID: - 0x%08X 0x%08X 0x%08X -\n",
@@ -95,7 +94,13 @@ int main(void)
 	
 	
 
+	if (initSramPuf(&husart, 0x20017200, 0x20017A00) != 0) usermode_Error(__LINE__);
 	
+	HAL_Delay(15000);
+	sendPacket();
+
+
+
 
 	while (1)
 	{
@@ -106,9 +111,10 @@ int main(void)
 		}
 
 		if(onceOnButtonPress()) {
-			// sendPacket();
-			sendCompletePufs();
+			sendPacket();
+			// sendCompletePufs();
 		}
+
 		
 		HAL_Delay(50);
 	}
