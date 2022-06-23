@@ -1,3 +1,20 @@
+//########################################################################
+// (C) Embedded Systems Lab
+// All rights reserved.
+// ------------------------------------------------------------
+// This document contains proprietary information belonging to
+// Research & Development FH OÖ Forschungs und Entwicklungs GmbH.
+// Using, passing on and copying of this document or parts of it
+// is generally not permitted without prior written authorization.
+// ------------------------------------------------------------
+// info(at)embedded-lab.at
+// https://www.embedded-lab.at/
+//########################################################################
+// *** File name: main.c
+// *** Date of file creation: 2022-03-16
+// *** List of autors: Lucas Drack
+//########################################################################
+
 #include "stm32f4xx_hal.h"
 #include <string.h>
 #include <stdio.h>
